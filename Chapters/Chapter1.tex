@@ -1,0 +1,82 @@
+\chapter{Introduction}
+%highlight how biological analysis is driven by 
+Advent of high throughput sequencing has revolutionized the field of analysis of biological data. The enormous scale of technological improvement has doubled the capacity of DNA sequencing each year \citep{reuter2015high}. Be it the study of cellular processes, response of cellular pathways to drugs or transcriptional regulation, now highly depend on an established pipeline of creating the experimental set up, choosing a suitable sequencing technology, often designing one if needed, and sequencing the sample. The volume of data and speed of rapid sequencing widen the scope of rigorous statistical study and application of sophisticated techniques from data science, described in \citep{schatz2015biological} in order to get biological insights from it. High throughput sequencing technology also enables scientists to design the protocol to serve a particular application, for example RNA-seq \citep{mortazavi2008mapping} and Ribo-seq \citep{gerashchenko2012genome} is designed to measure the level of transcription, frequency of protein binding is revealed by ChiP-seq \citep{zhang2008model} technology, nascent RNA transcription rate is measured by GRO-seq and PRO-seq \citep{core2008nascent} technology. Furthermore recent single cell technology enables minute measure of expression at the level of individual cells, which reveal heterogeneity of different types of cells (i.e. different tissue types etc). 
+
+In this thesis we would mostly study the RNA-seq data. Given the availability and low cost of production, RNA-seq has become one of the standard ways to measure mRNA abundance in a cell. It has wide application including {\it de novo} transcriptome assembly, estimating isoform expression and identifying novel transcripts and measuring differential expression under various conditions, like response to changing stimuli~\citep{Stubben2014} and disease states~\citep{diseaseDGE}. These problems also requires computationally efficient methods to pair with the data in order to infer biological insight. A number of algorithms by \citep{langmead2009ultrafast}, \citep{tophat}, \citep{mortazavi2008mapping} have been designed to analyse the sequencing data from RNA-seq experiments. The formal RNA-seq data analysis pipeline, that is widely used, comprises of three steps, first the single end or the paired end reads from the experiment are mapped or aligned to the reference transcriptome. In case the reference transcriptome is not present, a {\it de novo} assembly step is required to get an estimate of the contigs. In the second step, abundance estimation is done following a probabilistic model \citep{pachter2011models}. After these two steps the result data, i.e. quantification results are used to find out the expression levels of the genes, as described above in control treatment framework, differential expression analysis is carried out to find out the genes/transcripts that are down-regulated or up-regulated in response to a particular drug. 
+
+It is important to note that RNA-seq experiment generate steady state fragments from spliced transcripts, which makes the alignment step inherently difficult. A gene can spawn multiple isoforms in one experiment. Isoforms from same gene often share exons, which enables the generation of read sequences that, when mapped to transcriptome would naturally align with multiple transcripts at the same time. In this thesis we would propose a novel way to represent the data from a sequencing experiment by encoding the mapping information in terms of {\it equivalence classes}. Furthermore we would show two application where this representation can take aid to design robust and accurate algorithms. 
+
+The first application aims to refine the {\it de novo} transcriptome assemblies, resulted from different the state of the art assemblers. Despite of advanced algorithms used in assemblers, the reconstructed transcriptome often contains several errors including hybrid assembly where there are contigs from several gene families are clustered together, chimeric contigs (from fusion), spurious insertions and local mis-assembly \citep{transrate}. Though improved computational methods can reduce the prevalence of such errors, the data itself is often insufficient to guarantee deterministic recovery of all expressed transcripts.  The fractured and incomplete nature of such \denovo assemblies can confound downstream analysis. We have shown that the above mentioned equivalence classes can be used to form a graph based solution to this mis-assembly problem. We implemented the concept as a tool \rapclust, which is explained in Chapter 2.
+
+The second application is to exploit the idea of equivalence classes to come up with a succinct representation of raw read sequences. From studying the mapping patter of RNA-seq data we have observed that substantial amount of reads mapped to a limited number of transcript which are highly expressed in that sample. Moreover highly abundant transcripts often consists of discontinuous region of highly abundant sequences, characterized as \islands. We design our semi reference base compression tool \quark after extracting the set of islands by aligning raw RNA-seq reads to the reference transcriptome using \rapmap. Chapter 3 is devoted for detail explanation of \quark. 
+
+% more about equivalence classes
+
+
+
+
+%For example,~\citet{corset} argue that the large number of contigs that often result from \denovo transcriptome assembly can greatly reduce the statistical power of differential expression analysis.      
+
+
+\section{Alignment and Mapping}
+Ambiguous mapping has made the problem of quantification extremely challenging for RNA-seq data. \citet{salzman2011statistical} and \citet{pachter2011models} described useful models that can be used for quantification under multi-mapping. \citet{sailfish} discovered the fact that a costly alignment is not really required for the purpose of quantification, which is later used by \citet{kallisto} and \citet{salmon}. On the other hand \citet{rapmap},  proved that a stand alone exclusive mapper can be proven useful for meta-genomic applications. What all the aforementioned work share is the concept of putting similar reads together. Before we discuss the evolution of putting similar reads together in equivalence classes, let us formally define the mathematical framework of sequence mapping/alignment paradigm. 
+
+\subsection{Mathematical framework for nucleotide sequence matching}
+Given a set of alphabets $\Sigma$ and two non empty sequences $x,y \in \Sigma^+$, the alignment problem can be defined as a function $f : x \rightarrow \Sigma \cup \{-\}$, where, $``-"$ is a character to denote a gap has been introduced. Often there is a cost metric $d$ associated with the function $f$, defined as follows, 
+\begin{align}
+    d(x_i,y_j) &= 0,\text{ if } f(x_i) = y_j \\
+    &= \text{mismatch penalty},\text{ if } f(x_i) \neq y_j \\
+    &= \text{gap penalty},\text{ if } f(x_i) = ``-" 
+\end{align}
+
+The goal of most alignment algorithms \citep{Li2010} is to minimize the penalty of alignment. 
+
+For mapping, as mentioned above the mismatch or gaps are not considered as part of matching function. It is shown by \citet{salmon},\citet{kallisto} and \citet{rapmap} that for most of the downstream analysis it is adequate to find out the location where read maps and the target sequence rather than full alignment information. These approaches often define mapping on the basis of a threshold. It is to be noted, although \citet{sailfish} did not map the reads explicitly, it introduced the concept of bundling similar reads together which in turn inspired the batch of mapper dependent tools that followed it.
+
+\subsection{Mapping in framework of RNA-seq}
+Although at conceptual level RNA-seq mapping is not very different from alignment described above, but it would be worthwhile to define if formally as, these definitions are used through out the rest of the report.
+
+Given a set of $M$ transcripts (or transcriptome) $T = \{t_1,t_2,\ldots,t_M\}$, where $t_i$ represents the nucleotide sequence for transcript $i$, likewise  $R = \{r_1,r_2,\ldots,r_N\}$ denotes a set of read sequences (might be paired end or single end). Given $T$ and $R$, we can further define the task of mapping as a function $\mathcal{Q} : {T,R} \rightarrow \mathcal{P}$, where $\mathcal{P}$ is the set of tuples, $\mathcal{P} = \{(r_i,t_j,p_k) : r_i \in R, t_i \in T, p_k \in \mathbb{N}\}$. The presence of tuple $(r_i,t_j,p_k)$ represents the fact that read $r_i$ is mapped to transcript $t_j$ at position $p_k$. The concept of equivalence classes, described in this report are derived from $\mathcal{P}$.  
+
+\section{Equivalence class as a concept}
+
+The concept of grouping similar reads together is not a new concept. It has been mentioned several times in the literature either for improving multiple alignments or constructing a consensus. Although it is hard to do full chronological account for the exact mention of such concept in the context of computational biology, we would try to cover some important papers that implicitly made use of such concept. 
+
+\citet{pop2004} proposed the concept of grouping highly overlapping reads in the context of genome assembly. \citet{Salmela2011} considered the idea of grouping reads together on the basis of k-mer matches. \citet{isoem} made the idea of equivalence classes explicit to solve expression estimation problem of gene isoforms. They developed a line sweep algorithm to detect read-isoform compatibility on the basis of sequence similarity. As mentioned before \citep{sailfish} elaborated the idea to implement a k-mer based grouping of the reads. Recent methods \citep{kallisto},\citep{salmon},\citep{rapmap} have implemented it more explicitly. 
+
+Given this back ground on progression of development we can now formally define the idea of grouping reads and equivalence classes in the context of the current report.  
+
+\subsection{Definition of equivalence classes}
+\label{subsec:gen_equiv_classes}
+We define an equivalence relation over reads, based on the set of transcripts to which they map.  The set of reads related under this definition constitutes a read equivalence class. Let $\mathcal{M}\left(t_i\right)$ be the set of transcripts to which read $r_i$ maps, and let $\mathcal{M}\left(r_j\right)$ be the set of transcripts to which read $r_j$ maps.  We say that $r_i \sim r_j$ if and only if $\mathcal{M}\left(r_i\right) = \mathcal{M}\left(r_j\right)$. Consequently, a read equivalence class is a set of reads such that, for every pair $r_i$ and $r_j$ in the class, $r_i \sim r_j$. An equivalence class can be uniquely labeled based on the set of transcripts to which the reads contained in this class map.  We define the label of equivalence class $\eqclass{r_i} = \{ r_j \in R \mid r_j \sim r_i\}$ as $\eqlabel{\eqclass{r_i}}$.  It is important to remember that, though the label consists of transcript names, the equivalence relation itself is defined over sequenced fragments and not transcripts. Finally, in addition to a label, we denote the count of each equivalence class $C_i$ by $\eqcount{C_i}$; this is simply the number of equivalent fragments in $C_i$.
+
+
+Another interesting way to look at function $\mathcal{M}$ is to consider them as matrices. As shown in (1.4) a boolean matrix can represent the read to transcript membership. After rearranging the rows we obtain $\mathcal{M'}$. Three equivalence classes can be extracted from here, $\{t_1,t_2,t_4\}, \{t_1\}$ and $\{t_1,t_4\}$. 
+
+\begin{align}
+  \mathcal{M}=\kbordermatrix{%
+      & t_1 & t_2 & t_3 & t_4 \\
+    r_1 & 1 & 1 & 0 & 1 \\
+    r_2 & 1 & 0 & 0 & 0 \\
+    r_3 & 1 & 1 & 0 & 1 \\
+    r_4 & 1 & 0 & 0 & 0 \\
+    r_5 & 1 & 1 & 0 & 1 \\
+    r_6 & 1 & 0 & 0 & 1 \\
+  }  &&
+  \mathcal{M'}=\kbordermatrix{%
+      & t_1 & t_2 & t_3 & t_4 \\
+    r_1 & 1 & 1 & 0 & 1 \\
+    r_3 & 1 & 1 & 0 & 1 \\
+    r_5 & 1 & 1 & 0 & 1 \\
+    \hline
+    r_2 & 1 & 0 & 0 & 0 \\
+    r_4 & 1 & 0 & 0 & 0 \\
+    \hline
+    r_6 & 1 & 0 & 0 & 1 \\
+  }
+\end{align}
+ 
+
+
+%\section{}
+
