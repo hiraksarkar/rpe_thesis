@@ -11,4 +11,9 @@ There are few mappers which does compression of genome/transcriptome for the bet
 
 Apart from reference based and \denovo mappers, few mappers lie in the middle, which  stores a part of the reference that is shared between reads. Kpath \citep{Kingsford2015} is a tool that stores the shared reference as that acts as a backbone for a statistical generative model. An arithmetic coding is performed on the reads.
 
+\begin{figure}[!ht]
+\includegraphics[width=\textwidth]{Figures/quark_overview4-crop}
+\centering
+\caption{\label{fig:overview}An overview of the \quark pipeline. Equivalence classes are computed using \qm, Reads within classes along with the positions are then used find out the exact match length and the overhang portion. Islands are simultaneously processed from the intervals. In the last steps encoded reads along with the islands are stored as \quark output.}
+\end{figure}
 
