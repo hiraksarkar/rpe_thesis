@@ -97,7 +97,7 @@
 \newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
-\usepackage[centerlast,small,sc]{caption}
+\usepackage{caption}
 %\setlength{\captionmargin}{20pt}
 \newcommand{\fref}[1]{Figure~\ref{#1}}
 \newcommand{\tref}[1]{Table~\ref{#1}}
@@ -110,7 +110,7 @@
 \renewcommand{\textfraction}{0.1}
 \renewcommand{\dbltopfraction}{.85}
 \renewcommand{\floatpagefraction}{0.75}
-\renewcommand{\dblfloatpagefraction}{.75}
+%\renewcommand{\dblfloatpagefraction}{.75}
 \setcounter{topnumber}{9}
 \setcounter{bottomnumber}{9}
 \setcounter{totalnumber}{20}
@@ -124,6 +124,7 @@
 \usepackage{rotating}
 \usepackage{listings}
 \usepackage{lstpatch}
+
 \lstset{captionpos=b,
         frame=tb,
         basicstyle=\scriptsize\ttfamily,
@@ -348,6 +349,9 @@
 \newcommand{\islands}{\textit{islands}\xspace}
 \newcommand{\qm}{\textit{quasi-mapping}\xspace}
 \newcommand{\Qm}{\textit{Quasi-mapping}\xspace}
+\newcommand{\is}{\textit{island}\xspace}
+\newcommand{\iss}{\textit{islands}\xspace}
+\newcommand{\kmer}{\textit{k-mer}\xspace}
 \newcommand{\eqclass}[1]{\ensuremath{\left[#1\right]}\xspace}
 \newcommand{\eqlabel}[1]{\ensuremath{\text{\texttt{lab}}\left(#1\right)}\xspace}
 \newcommand{\eqcount}[1]{\ensuremath{\text{\texttt{count}}\left(#1\right)}\xspace}
@@ -415,5 +419,6 @@
   \btypeout{\bibname}
   \@mainmatterfalse}
 \endinput
+
 %%
 %% End of file `Thesis.cls'.
