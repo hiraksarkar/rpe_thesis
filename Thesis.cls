@@ -336,6 +336,7 @@
 \newcommand{\rapmap}{\texttt{RapMap}\xspace}
 \newcommand{\mcl}{\texttt{MCL}\xspace}
 \newcommand{\methodName}{\texttt{RapClust}\xspace}
+%\newcommand{\rapc}{\texttt{RapClust}\xspace}
 \newcommand{\quark}{\texttt{Quark}\xspace}
 \newcommand{\corset}{\texttt{Corset}\xspace}
 \newcommand{\cdhit}{\texttt{CD-HIT}\xspace}
@@ -351,6 +352,7 @@
 \newcommand{\Qm}{\textit{Quasi-mapping}\xspace}
 \newcommand{\is}{\textit{island}\xspace}
 \newcommand{\iss}{\textit{islands}\xspace}
+\newcommand{\eq}{\textit{equivalent classes}\xspace}
 \newcommand{\kmer}{\textit{k-mer}\xspace}
 \newcommand{\eqclass}[1]{\ensuremath{\left[#1\right]}\xspace}
 \newcommand{\eqlabel}[1]{\ensuremath{\text{\texttt{lab}}\left(#1\right)}\xspace}

@@ -43,11 +43,17 @@
 \setstretch{1.3}  % It is better to have smaller font and larger line spacing than the other way round
 
 % Define the page headers using the FancyHdr package and set up for one-sided printing
-\fancyhead{}  % Clears all page headers and footers
-\rhead{\thepage}  % Sets the right side header to show the page number
-\lhead{}  % Clears the left side page header
-
-\pagestyle{fancy}  % Finally, use the "fancy" page style to implement the FancyHdr headers
+%\fancyhead{}  % Clears all page headers and footers
+%\rhead{\thepage}  % Sets the right side header to show the page number
+%\lhead{}  % Clears the left side page header
+\pagestyle{fancy}
+%\renewcommand{\subsubsectionmark}[1]{\markright{\thesubsubsection\ #1}}
+\fancyhf{}
+%\rhead{\fancyplain{}{$<$Name of the report$>$}} % predefined ()
+%\lhead{\fancyplain{}{\rightmark }}
+%\fancyhead[L]{\emph{\rightmark}}
+%\fancyhead[R]{\thepage}
+  % Finally, use the "fancy" page style to implement the FancyHdr headers
 
 %% ----------------------------------------------------------------
 % Declaration Page required for the Thesis, your institution may give you a different text to place here
@@ -103,7 +109,21 @@ Date:\\
 \abstract{
 \addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
 
-The Thesis Abstract is written here (and usually kept to just this page). The page is kept centered vertically so can expand into the blank space above the title too\ldots
+Recent technological advances in high-throughput sequencing have posed a new challenge of designing robust and efficient algorithms for downstream analysis. This rapid growth has also widened the scope for application of more sophisticated statistical techniques to discover biological insights. In this report, we have focused on analysis of biological sequencing data derived from RNA-seq, an experimental protocol for assaying the entire transcriptome ( i.e., the collection of expressed transcripts) of a given sample. RNA-seq is tremendously useful for a wide variety of tasks ranging from differential expression analysis to the discovery of previously unannotated genes and transcripts. In this work, we used the initial mapping results from \qm, a state-of-the-art mapping algorithm, to construct a more compact representation, termed as {\it equivalence classes} of the RNA-seq experiment. We have shown the usefulness of such representation via two different applications: \rapclust and \quark..
+
+Our first tool, \rapclust is designed to assist in the analysis of \denovo transcriptomes. \rapclust introduces a novel and highly efficient method for clustering contigs from \denovo transcriptome assemblies, exploiting the multi-mapping sequence fragments as evidence of contigs that may derive from the same underlying gene. Specifically, we cast the problem of clustering contigs as the problem of clustering a sparse graph. Compared to other state-of-the-art tools, \rapclust is substantially faster.  Moreover, \rapclust produces clusters that with a closer correspondence to the true genes of origin than other tools.  The methodology of \rapclust also yields accurate estimates of expression for the resulting clusters (i.e., genes). Our second tool, \quark, uses the concept of {\it equivalence classes} to compress RNA-seq read data. \quark provides state-of-the-art compression rates, and introduces the concept of ``semi-reference-based" compression, in which a reference is assumed at the compressor, but not required at the decompressor.
+
+
+%Recent technological advances in high throughput sequencing has posed a new challenge of designing robust and efficient algorithms for analysis. This rapid growth has also widen the scope for application of more sophisticated statistical techniques to discover biological insights. In this report we have focused on analysis of biological sequencing data derived from RNA-seq. RNA-seq is an experimental protocol for assaying the entire transcriptome ( i.e. the collection of expressed transcripts) of a given sample. RNA-seq is tremendously useful for various range of tasks from differential expression analysis to the discovery of previously unannotated genes and transcripts. We use the initial mapping results from \qm: a state of the art mapping algorithm, to construct a more compact representation, termed as {\it equivalence classes} of the RNA-seq experiment. We have shown the usefulness such representation via two different applications.
+
+%Our first tool, \rapclust is designed to assist in the analysis of \denovo transcriptomes. \rapclust introduces a novel and highly-efficient method for clustering contigs from de novo transcriptome assemblies, exploiting the multi-mapping sequence fragments as evidence of contigs that may derive from the same underlying gene. To be more specific we cast the problem of clustering contigs as the problem of clustering a sparse graph. Compared to other state of the art tools, \rapclust is tremendously faster.  Moreover, \rapclust produces clusters that more closely correspond to the true genes of origin than other tools.  The methodology of \rapclust also yields accurate estimates of expression for the resulting clusters (i.e. genes). Our second tool \quark uses the concept of {\it equivalence classes} to compress RNA-seq read data. \quark provides state-of-the-art compression rates, and introduces the concept of ``semi-reference-based" compression, in which a reference is assumed at the compressor, but not required at the decompressor.
+
+%My research focuses on the design of robust and efficient algorithms for analyzing biological data, with the goal of obtaining biological insights from typically large datasets. The major concentration of my study has been the analysis of biological sequencing data — specifically, RNA-seq. RNA-seq is an experimental protocol for assaying the entire transcriptome ( i.e. the collection of expressed transcripts) of a given sample. RNA-seq is tremendously useful for various range of tasks from differential expression analysis to the discovery of previously unannotated genes and transcripts. 
+
+%A crucial application of RNA-seq is de-novo transcriptome analysis, in which we wish to study the transcriptomes of organisms for which no genomic assembly is available.  We have developed a tool, RapClust, to assist in the analysis of de novo transcriptomes. RapClust introduces a novel and highly-efficient method for clustering contigs from de novo transcriptome assemblies, exploiting the multi-mapping sequence fragments as evidence of contigs that may derive from the same underlying gene. To be more specific we cast the problem of clustering contigs as the problem of clustering a sparse graph. Compared to other state of the art tools, RapClust is tremendously faster.  Moreover, RapClust produces clusters that more closely correspond to the true genes of origin than other tools.  The methodology of RapClust also yields accurate estimates of expression for the resulting clusters (i.e. genes). 
+
+%I will also discuss another of our tools, Quark (yet to release), which adopts a novel methodology  to compress RNA-seq read data. Quark provides state-of-the-art compression rates, and introduces the concept of “semi-reference-based” compression, in which a reference is assumed at the compressor, but not required at the decompressor.  Quark generates a very compact representation of the read sequences, that can be efficiently used for downstream analysis.
+
 
 }
 
@@ -117,8 +137,7 @@ The Thesis Abstract is written here (and usually kept to just this page). The pa
 \acknowledgements{
 \addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
 
-Thank you people\ldots
-
+I would like to thank my advisor Prof. Rob Patro for his patience and continuous support throughout the project. My fellow students Avi, Laraib, Nitish, Komal and Mohsin for patiently listening and commenting on the progress of the project in every group meeting.
 }
 \clearpage  % End of the Acknowledgements
 %% ----------------------------------------------------------------
@@ -141,43 +160,41 @@ Thank you people\ldots
 %% ----------------------------------------------------------------
 \setstretch{1.5}  % Set the line spacing to 1.5, this makes the following tables easier to read
 \clearpage  % Start a new page
-\lhead{\emph{Abbreviations}}  % Set the left side page header to "Abbreviations"
-\listofsymbols{ll}  % Include a list of Abbreviations (a table of two columns)
-{
+%\lhead{\emph{Abbreviations}}  % Set the left side page header to "Abbreviations"
+%\listofsymbols{ll}  % Include a list of Abbreviations (a table of two columns)
+%{
 % \textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
-\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere \\
+%\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere \\
 
-}
+%}
 
 %% ----------------------------------------------------------------
-\clearpage  % Start a new page
-\lhead{\emph{Physical Constants}}  % Set the left side page header to "Physical Constants"
-\listofconstants{lrcl}  % Include a list of Physical Constants (a four column table)
-{
+%\clearpage  % Start a new page
+%\lhead{\emph{Physical Constants}}  % Set the left side page header to "Physical Constants"
+%\listofconstants{lrcl}  % Include a list of Physical Constants (a four column table)
+%{
 % Constant Name & Symbol & = & Constant Value (with units) \\
-Speed of Light & $c$ & $=$ & $2.997\ 924\ 58\times10^{8}\ \mbox{ms}^{-\mbox{s}}$ (exact)\\
-
-}
+%Speed of Light & $c$ & $=$ & $2.997\ 924\ 58\times10^{8}\ \mbox{ms}^{-\mbox{s}}$ (exact)\\}
 
 %% ----------------------------------------------------------------
-\clearpage  %Start a new page
-\lhead{\emph{Symbols}}  % Set the left side page header to "Symbols"
-\listofnomenclature{lll}  % Include a list of Symbols (a three column table)
-{
-% symbol & name & unit \\
-$a$ & distance & m \\
-$P$ & power & W (Js$^{-1}$) \\
-& & \\ % Gap to separate the Roman symbols from the Greek
-$\omega$ & angular frequency & rads$^{-1}$ \\
-}
-%% ----------------------------------------------------------------
-% End of the pre-able, contents and lists of things
-% Begin the Dedication page
+% \clearpage  %Start a new page
+% \lhead{\emph{Symbols}}  % Set the left side page header to "Symbols"
+% \listofnomenclature{lll}  % Include a list of Symbols (a three column table)
+% {
+% % symbol & name & unit \\
+% $a$ & distance & m \\
+% $P$ & power & W (Js$^{-1}$) \\
+% & & \\ % Gap to separate the Roman symbols from the Greek
+% $\omega$ & angular frequency & rads$^{-1}$ \\
+% }
+% %% ----------------------------------------------------------------
+% % End of the pre-able, contents and lists of things
+% % Begin the Dedication page
 
-\setstretch{1.3}  % Return the line spacing back to 1.3
+% \setstretch{1.3}  % Return the line spacing back to 1.3
 
-\pagestyle{empty}  % Page style needs to be empty for this page
-\dedicatory{For/Dedicated to/To my\ldots}
+% \pagestyle{empty}  % Page style needs to be empty for this page
+% \dedicatory{For/Dedicated to/To my\ldots}
 
 \addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
 
@@ -189,13 +206,16 @@ $\omega$ & angular frequency & rads$^{-1}$ \\
 % Include the chapters of the thesis, as separate files
 % Just uncomment the lines as you write the chapters
 
+
+
+%\lhead{\emph{\thesection}} 
 \input{Chapters/Chapter1} % Introduction
 
 \input{Chapters/Chapter2} % Background Theory 
 
 \input{Chapters/Chapter3} % Experimental Setup
 
-%\input{Chapters/Chapter4} % Experiment 1
+\input{Chapters/Chapter4} % Experiment 1
 
 %\input{Chapters/Chapter5} % Experiment 2
 
@@ -208,9 +228,9 @@ $\omega$ & angular frequency & rads$^{-1}$ \\
 
 \addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
 
-\appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
+%\appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
 
-\input{Appendices/AppendixA}	% Appendix Title
+%\input{Appendices/AppendixA}	% Appendix Title
 
 %\input{Appendices/AppendixB} % Appendix Title
 
